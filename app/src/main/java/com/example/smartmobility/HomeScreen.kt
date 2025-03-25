@@ -3,6 +3,7 @@ package com.example.smartmobility
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,10 +33,10 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         Map()
         TransportModeNavBar()
         TravelRecommendationSection()
+        NearbyRecommendationSection()
     }
 }
 
-@Preview
 @Composable
 private fun Map(modifier: Modifier = Modifier) {
     Image(
@@ -45,7 +47,22 @@ private fun Map(modifier: Modifier = Modifier) {
     )
 }
 
-@Preview(showBackground = true)
+sealed class TransportMode(
+    val title: String, val image: Int
+) {
+    object BusTransit :
+        TransportMode(title = "实时公交", image = R.drawable.transportmodenavitem_bustransit)
+
+    object MetroTransit :
+        TransportMode(title = "地铁出行", image = R.drawable.transportmodenavitem_metrotransit)
+
+    object ScenicSpot :
+        TransportMode(title = "景区导览", image = R.drawable.transportmodenavitem_scenicspot)
+
+    object BikeSharing :
+        TransportMode(title = "共享单车", image = R.drawable.transportmodenavitem_bikesharing)
+}
+
 @Composable
 fun TransportModeNavBar(modifier: Modifier = Modifier) {
     val transportModeNavItemList = listOf<TransportMode>(
@@ -84,23 +101,6 @@ fun TransportModeNavItem(
     }
 }
 
-sealed class TransportMode(
-    val title: String, val image: Int
-) {
-    object BusTransit :
-        TransportMode(title = "实时公交", image = R.drawable.transportmodenavitem_bustransit)
-
-    object MetroTransit :
-        TransportMode(title = "地铁出行", image = R.drawable.transportmodenavitem_metrotransit)
-
-    object ScenicSpot :
-        TransportMode(title = "景区导览", image = R.drawable.transportmodenavitem_scenicspot)
-
-    object BikeSharing :
-        TransportMode(title = "共享单车", image = R.drawable.transportmodenavitem_bikesharing)
-}
-
-@Preview(showBackground = true)
 @Composable
 private fun TravelRecommendationSection(modifier: Modifier = Modifier) {
     val recommendationCardList = listOf<TravelRecommendation>(
@@ -109,9 +109,9 @@ private fun TravelRecommendationSection(modifier: Modifier = Modifier) {
             routeDuration = 35,
             routeDetail = "地铁1号线 → 公交7路"
         ), TravelRecommendation(
-            routeOriginDestination = "西湖文化广场 → 灵隐寺",
-            routeDuration = 35,
-            routeDetail = "地铁1号线 → 公交7路"
+            routeOriginDestination = "武林广场 → 西湖景区",
+            routeDuration = 25,
+            routeDetail = "地铁2号线 → 公交游5路"
         )
     )
     Column(
@@ -167,7 +167,9 @@ private fun TravelRecommendationCard(
     }
 
     Card(
-        modifier = modifier.fillMaxWidth().padding(vertical = 4.dp)
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -189,7 +191,67 @@ private fun TravelRecommendationCard(
             )
         }
     }
+}
 
+
+data class NearbyRecommendation(
+    val attractionImage: Int,
+    val attractionName: String,
+)
+
+
+@Composable
+private fun NearbyRecommendationSection(
+    modifier: Modifier = Modifier,
+) {
+    val recommendationList = listOf<NearbyRecommendation>(
+        NearbyRecommendation(
+            attractionImage = R.drawable.nearbyrecommendation_first, attractionName = "断桥残雪"
+        ), NearbyRecommendation(
+            attractionImage = R.drawable.nearbyrecommendation_second, attractionName = "灵隐寺"
+        )
+    )
+
+    Column(
+        modifier = modifier
+    ) {
+        Text(
+            text = "周边推荐",
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(vertical = 16.dp)
+        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            NearbyRecommendationCard(recommendationList[0], modifier = Modifier.weight(0.5f))
+            NearbyRecommendationCard(recommendationList[1], modifier = Modifier.weight(0.5f))
+        }
+    }
+}
+
+@Composable
+fun NearbyRecommendationCard(
+    recommendation: NearbyRecommendation,
+    modifier: Modifier = Modifier,
+) {
+    Box(modifier = modifier) {
+        Image(
+            painter = painterResource(recommendation.attractionImage),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(shape = MaterialTheme.shapes.medium)
+        )
+        Text(
+            recommendation.attractionName,
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(8.dp),
+            color = MaterialTheme.colorScheme.onSecondary,
+            style = MaterialTheme.typography.bodyLarge
+        )
+    }
 }
 
 @Preview(showBackground = true)
