@@ -91,7 +91,8 @@ private fun RouteOriginDestination(modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically, modifier = modifier
     ) {
-        TextField(value = "",
+        TextField(
+            value = "",
             onValueChange = { },
             leadingIcon = {
                 Icon(
@@ -119,7 +120,8 @@ private fun RouteOriginDestination(modifier: Modifier = Modifier) {
                 modifier = Modifier.fillMaxSize()
             )
         }
-        TextField(value = "",
+        TextField(
+            value = "",
             onValueChange = { },
             leadingIcon = {
                 Icon(
@@ -224,7 +226,7 @@ private fun FrequentRouteCard(
     frequentRouteParam: FrequentRouteParam
 ) {
     Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.padding(16.dp)
@@ -277,28 +279,26 @@ private fun FrequentRouteCard(
             }
             Row(
                 horizontalArrangement = Arrangement.spacedBy(24.dp),
-                modifier = Modifier.padding(horizontal = 8.dp)
+                modifier = Modifier.padding(horizontal = 4.dp)
             ) {
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
-                ) {
-                    Text(
-                        text = frequentRouteParam.first,
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.padding(4.dp)
-                    )
-                }
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
-                ) {
-                    Text(
-                        text = frequentRouteParam.second,
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.padding(4.dp)
-                    )
-                }
+                RouteItem(frequentRouteParam.first)
+                RouteItem(frequentRouteParam.second)
             }
         }
+    }
+}
+
+@Composable
+private fun RouteItem(text: String, modifier: Modifier = Modifier) {
+    Card(
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest)
+        , modifier = modifier
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.padding(4.dp)
+        )
     }
 }
 
@@ -335,7 +335,7 @@ private fun NearbyStationCard(
     modifier: Modifier = Modifier,
 ) {
     Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
         modifier = modifier
     ) {
         Column(
@@ -374,18 +374,10 @@ private fun NearbyStationCard(
                 }
             }
             Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 nearbyStationParam.routeList.forEach { item ->
-                    Card(
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)
-                    ) {
-                        Text(
-                            item,
-                            style = MaterialTheme.typography.bodySmall,
-                            modifier = Modifier.padding(4.dp)
-                        )
-                    }
+                    RouteItem(text = item)
                 }
             }
         }

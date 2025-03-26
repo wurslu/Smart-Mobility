@@ -173,7 +173,7 @@ private fun TravelRecommendationCard(
 
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
+            containerColor = MaterialTheme.colorScheme.surfaceContainer
         ),
         modifier = modifier
             .fillMaxWidth()
