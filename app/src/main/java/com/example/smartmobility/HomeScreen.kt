@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -121,7 +123,8 @@ private fun TravelRecommendationSection(modifier: Modifier = Modifier) {
     ) {
         Text(
             text = "出行推荐",
-            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(vertical = 16.dp)
         )
         recommendationCardList.forEach { recommendation ->
@@ -153,7 +156,7 @@ private fun TravelRecommendationCard(
             )
             Text(
                 text = recommendation.routeOriginDestination,
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(horizontal = 4.dp)
             )
         }
@@ -169,6 +172,9 @@ private fun TravelRecommendationCard(
     }
 
     Card(
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer
+        ),
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp)
@@ -219,7 +225,8 @@ private fun NearbyRecommendationSection(
     ) {
         Text(
             text = "周边推荐",
-            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(vertical = 16.dp)
         )
         Row(
