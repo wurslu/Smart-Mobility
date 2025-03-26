@@ -91,8 +91,7 @@ private fun RouteOriginDestination(modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically, modifier = modifier
     ) {
-        TextField(
-            value = "",
+        TextField(value = "",
             onValueChange = { },
             leadingIcon = {
                 Icon(
@@ -120,8 +119,7 @@ private fun RouteOriginDestination(modifier: Modifier = Modifier) {
                 modifier = Modifier.fillMaxSize()
             )
         }
-        TextField(
-            value = "",
+        TextField(value = "",
             onValueChange = { },
             leadingIcon = {
                 Icon(
@@ -291,8 +289,8 @@ private fun FrequentRouteCard(
 @Composable
 private fun RouteItem(text: String, modifier: Modifier = Modifier) {
     Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest)
-        , modifier = modifier
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
+        modifier = modifier
     ) {
         Text(
             text = text,
