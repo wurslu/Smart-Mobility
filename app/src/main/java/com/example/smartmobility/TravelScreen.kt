@@ -38,9 +38,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.smartmobility.general.components.Title
 import kotlin.String
 import kotlin.collections.listOf
 
@@ -63,7 +63,7 @@ fun TravelScreen(modifier: Modifier = Modifier) {
         )
     )
     val nearbyStationParamList = listOf<NearbyStationParam>(
-        NearbyStationParam("文三路学院路口", 350, listOf<String>("14路", "8路", "教育专线")),
+        NearbyStationParam("文三路学院路口", 350, listOf<String>("14路", "8路", "教育专线","K528路")),
         NearbyStationParam("文三路地铁站", 750, listOf<String>("164路", "217路", "9路"))
     )
 
@@ -106,7 +106,7 @@ private fun RouteOriginDestination(modifier: Modifier = Modifier) {
                 focusedIndicatorColor = Color.Transparent,
             ),
             shape = MaterialTheme.shapes.medium,
-            placeholder = { Text("您在哪上车？") },
+            placeholder = { Text("您在哪上车？", style = MaterialTheme.typography.bodySmall) },
             modifier = Modifier.weight(0.4f)
         )
         IconButton(
@@ -134,7 +134,7 @@ private fun RouteOriginDestination(modifier: Modifier = Modifier) {
                 focusedIndicatorColor = Color.Transparent,
             ),
             shape = MaterialTheme.shapes.medium,
-            placeholder = { Text("您要去哪？") },
+            placeholder = { Text("您要去哪？", style = MaterialTheme.typography.bodySmall) },
             modifier = Modifier.weight(0.4f)
         )
     }
@@ -202,12 +202,7 @@ private fun FrequentRouteSection(
     frequentRouteList: List<FrequentRouteParam>, modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
-        Text(
-            text = "常用路线",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(vertical = 16.dp)
-        )
+        Title("常用路线")
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
@@ -271,12 +266,14 @@ private fun FrequentRouteCard(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = "实时出发", style = MaterialTheme.typography.bodySmall
+                        text = "实时出发",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             }
             Row(
-                horizontalArrangement = Arrangement.spacedBy(24.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.padding(horizontal = 4.dp)
             ) {
                 RouteItem(frequentRouteParam.first)
@@ -289,12 +286,14 @@ private fun FrequentRouteCard(
 @Composable
 private fun RouteItem(text: String, modifier: Modifier = Modifier) {
     Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
+        shape = MaterialTheme.shapes.small,
         modifier = modifier
     ) {
         Text(
             text = text,
             style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.padding(4.dp)
         )
     }
@@ -311,12 +310,7 @@ private fun NearbyStationSection(
     Column(
         modifier = modifier
     ) {
-        Text(
-            text = "附近站点",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(vertical = 16.dp)
-        )
+        Title("附近站点")
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
@@ -356,23 +350,22 @@ private fun NearbyStationCard(
                         Text(
                             nearbyStationParam.station,
                             style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                         Text(
                             "距离 ${nearbyStationParam.distance}m",
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.6f)
+                            color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.7f)
                         )
                     }
                 }
                 OutlinedButton(border = BorderStroke(
-                    width = 1.dp, color = MaterialTheme.colorScheme.onSecondaryContainer
+                    width = 1.dp, color = MaterialTheme.colorScheme.primary
                 ), onClick = {}) {
-                    Text("导航", color = MaterialTheme.colorScheme.onSecondaryContainer)
+                    Text("导航", color = MaterialTheme.colorScheme.primary)
                 }
             }
             Row(
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 nearbyStationParam.routeList.forEach { item ->
                     RouteItem(text = item)

@@ -1,6 +1,5 @@
 package com.example.smartmobility
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,11 +19,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.smartmobility.general.components.ImageResource
+import com.example.smartmobility.general.components.MediaTitleItem
+import com.example.smartmobility.general.components.Title
 
 
 @Composable
@@ -79,31 +81,13 @@ fun TransportModeNavBar(modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.SpaceBetween, modifier = modifier.fillMaxWidth()
     ) {
         transportModeNavItemList.forEach { item ->
-            TransportModeNavItem(
-                title = item.title, image = item.image
+            MediaTitleItem(
+                title = item.title, imageResource = ImageResource.ResourceImage(resId = item.image)
             )
         }
     }
 }
 
-@Composable
-fun TransportModeNavItem(
-    @DrawableRes image: Int, title: String, modifier: Modifier = Modifier
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier
-    ) {
-        Image(
-            painter = painterResource(image),
-            contentDescription = null,
-            modifier = Modifier.size(64.dp)
-        )
-        Text(
-            text = title,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-    }
-}
 
 @Composable
 private fun TravelRecommendationSection(modifier: Modifier = Modifier) {
@@ -121,12 +105,7 @@ private fun TravelRecommendationSection(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
     ) {
-        Text(
-            text = "出行推荐",
-            fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(vertical = 16.dp)
-        )
+        Title("出行推荐")
         recommendationCardList.forEach { recommendation ->
             TravelRecommendationCard(
                 recommendation = recommendation,
@@ -152,6 +131,7 @@ private fun TravelRecommendationCard(
             Image(
                 painter = painterResource(R.drawable.travelrecommendationcard_icon),
                 contentDescription = null,
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
                 modifier = Modifier.size(14.dp)
             )
             Text(
@@ -223,12 +203,7 @@ private fun NearbyRecommendationSection(
     Column(
         modifier = modifier
     ) {
-        Text(
-            text = "周边推荐",
-            fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(vertical = 16.dp)
-        )
+        Title("周边推荐")
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -266,5 +241,7 @@ fun NearbyRecommendationCard(
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+    MaterialTheme {
+        HomeScreen()
+    }
 }
