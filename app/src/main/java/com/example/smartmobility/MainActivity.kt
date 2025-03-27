@@ -89,31 +89,30 @@ fun TopBar(modifier: Modifier = Modifier) {
                 tint = MaterialTheme.colorScheme.secondary
             )
         }
-        SearchBar(
-            inputField = {
-                SearchBarDefaults.InputField(query = "",
-                    onQueryChange = { },
-                    onSearch = { },
-                    expanded = false,
-                    onExpandedChange = { },
-                    placeholder = { Text("搜索目的地、公交路线") },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = "搜索",
-                            tint = MaterialTheme.colorScheme.secondary
-                        )
-                    },
-                    trailingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Mic,
-                            contentDescription = "语音输入",
-                            tint = MaterialTheme.colorScheme.secondary
-                        )
-                    },
-                    colors = SearchBarDefaults.inputFieldColors(),
-                    interactionSource = remember { MutableInteractionSource() })
-            },
+        SearchBar(inputField = {
+            SearchBarDefaults.InputField(query = "",
+                onQueryChange = { },
+                onSearch = { },
+                expanded = false,
+                onExpandedChange = { },
+                placeholder = { Text("搜索目的地、公交路线") },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = "搜索",
+                        tint = MaterialTheme.colorScheme.secondary
+                    )
+                },
+                trailingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Mic,
+                        contentDescription = "语音输入",
+                        tint = MaterialTheme.colorScheme.secondary
+                    )
+                },
+                colors = SearchBarDefaults.inputFieldColors(),
+                interactionSource = remember { MutableInteractionSource() })
+        },
             expanded = false,
             onExpandedChange = { },
             modifier = Modifier
@@ -142,8 +141,8 @@ fun BottomBar(navController: NavController, currentRoute: String?, modifier: Mod
             NavigationBarItem(selected = item.route == currentRoute,
                 onClick = {
                     navController.navigate(route = item.route) {
-                        launchSingleTop = true
                         popUpTo(item.route)
+                        launchSingleTop = true
                     }
                 },
                 icon = { Icon(imageVector = item.icon, contentDescription = item.title) },
@@ -159,10 +158,21 @@ private fun SmartMobility() {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    val shouldShowTopBar = remember(currentRoute) {
+        currentRoute in setOf<String>(
+            NavigationBarItem.Home.route,
+            NavigationBarItem.Travel.route,
+            NavigationBarItem.Guide.route,
+
+            )
+    }
 
     SmartMobilityTheme {
-        Scaffold(
-            topBar = { TopBar() },
+        Scaffold(topBar = {
+            if (shouldShowTopBar) {
+                TopBar()
+            }
+        },
             bottomBar = { BottomBar(navController, currentRoute) },
             modifier = Modifier.fillMaxSize()
         ) { innerPadding ->
