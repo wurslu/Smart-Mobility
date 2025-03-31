@@ -33,6 +33,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -40,33 +42,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.smartmobility.general.components.Title
+import com.example.smartmobility.model.FrequentRoute
+import com.example.smartmobility.model.NearbyStation
+import com.example.smartmobility.model.TravelScreen
 import kotlin.String
 import kotlin.collections.listOf
 
 
 @Composable
-fun TravelScreen(modifier: Modifier = Modifier) {
-    val frequentRouteList = listOf<FrequentRouteParam>(
-        FrequentRouteParam(
-            origin = "公司",
-            destination = "家",
-            duration = 35,
-            first = "地铁1号线",
-            second = "公交7路"
-        ), FrequentRouteParam(
-            origin = "家",
-            destination = "商场",
-            duration = 25,
-            first = "地铁2号线",
-            second = "公交游5路"
-        )
-    )
-    val nearbyStationParamList = listOf<NearbyStationParam>(
-        NearbyStationParam("文三路学院路口", 350, listOf<String>("14路", "8路", "教育专线","K528路")),
-        NearbyStationParam("文三路地铁站", 750, listOf<String>("164路", "217路", "9路"))
-    )
-
+fun TravelScreen(modifier: Modifier = Modifier, travelScreenViewModel: TravelScreen = viewModel()) {
+    val frequentRouteList by travelScreenViewModel.frequentRouteList.collectAsState()
+    val nearbyStationList by travelScreenViewModel.nearbyRecommendationList.collectAsState()
 
     LazyColumn(
         modifier = modifier
@@ -80,7 +68,7 @@ fun TravelScreen(modifier: Modifier = Modifier) {
             FrequentRouteSection(frequentRouteList = frequentRouteList)
         }
         item {
-            NearbyStationSection(nearbyStationParamList = nearbyStationParamList)
+            NearbyStationSection(nearbyStationList = nearbyStationList)
         }
     }
 }
@@ -91,7 +79,8 @@ private fun RouteOriginDestination(modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically, modifier = modifier
     ) {
-        TextField(value = "",
+        TextField(
+            value = "",
             onValueChange = { },
             leadingIcon = {
                 Icon(
@@ -119,7 +108,8 @@ private fun RouteOriginDestination(modifier: Modifier = Modifier) {
                 modifier = Modifier.fillMaxSize()
             )
         }
-        TextField(value = "",
+        TextField(
+            value = "",
             onValueChange = { },
             leadingIcon = {
                 Icon(
@@ -189,17 +179,9 @@ fun TransportModeCard(
     }
 }
 
-data class FrequentRouteParam(
-    val origin: String,
-    val destination: String,
-    val duration: Int,
-    val first: String,
-    val second: String
-)
-
 @Composable
 private fun FrequentRouteSection(
-    frequentRouteList: List<FrequentRouteParam>, modifier: Modifier = Modifier
+    frequentRouteList: List<FrequentRoute>, modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
         Title("常用路线")
@@ -210,13 +192,12 @@ private fun FrequentRouteSection(
                 FrequentRouteCard(item)
             }
         }
-
     }
 }
 
 @Composable
 private fun FrequentRouteCard(
-    frequentRouteParam: FrequentRouteParam
+    frequentRouteParam: FrequentRoute
 ) {
     Card(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
@@ -299,13 +280,10 @@ private fun RouteItem(text: String, modifier: Modifier = Modifier) {
     }
 }
 
-data class NearbyStationParam(
-    val station: String, val distance: Int, val routeList: List<String>
-)
 
 @Composable
 private fun NearbyStationSection(
-    nearbyStationParamList: List<NearbyStationParam>, modifier: Modifier = Modifier
+    nearbyStationList: List<NearbyStation>, modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
@@ -314,7 +292,7 @@ private fun NearbyStationSection(
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            nearbyStationParamList.forEach { nearbyStationParam ->
+            nearbyStationList.forEach { nearbyStationParam ->
                 NearbyStationCard(nearbyStationParam)
             }
         }
@@ -323,7 +301,7 @@ private fun NearbyStationSection(
 
 @Composable
 private fun NearbyStationCard(
-    nearbyStationParam: NearbyStationParam,
+    nearbyStationParam: NearbyStation,
     modifier: Modifier = Modifier,
 ) {
     Card(

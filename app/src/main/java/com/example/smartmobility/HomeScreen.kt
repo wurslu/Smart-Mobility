@@ -15,6 +15,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,13 +26,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.smartmobility.general.components.ImageResource
 import com.example.smartmobility.general.components.MediaTitleItem
 import com.example.smartmobility.general.components.Title
+import com.example.smartmobility.model.HomeScreen
+import com.example.smartmobility.model.NearbyRecommendation
+import com.example.smartmobility.model.TravelRecommendation
 
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(modifier: Modifier = Modifier, helloScreenViewModel: HomeScreen = viewModel()) {
+    val travelRecommendationList by helloScreenViewModel.travelRecommendationList.collectAsState()
+    val nearbyRecommendationList by helloScreenViewModel.nearbyRecommendationList.collectAsState()
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -38,8 +46,8 @@ fun HomeScreen(modifier: Modifier = Modifier) {
     ) {
         item { Map() }
         item { TransportModeNavBar() }
-        item { TravelRecommendationSection() }
-        item { NearbyRecommendationSection() }
+        item { TravelRecommendationSection(recommendationCardList = travelRecommendationList) }
+        item { NearbyRecommendationSection(recommendationList = nearbyRecommendationList) }
     }
 }
 
@@ -90,18 +98,11 @@ fun TransportModeNavBar(modifier: Modifier = Modifier) {
 
 
 @Composable
-private fun TravelRecommendationSection(modifier: Modifier = Modifier) {
-    val recommendationCardList = listOf<TravelRecommendation>(
-        TravelRecommendation(
-            routeOriginDestination = "西湖文化广场 → 灵隐寺",
-            routeDuration = 35,
-            routeDetail = "地铁1号线 → 公交7路"
-        ), TravelRecommendation(
-            routeOriginDestination = "武林广场 → 西湖景区",
-            routeDuration = 25,
-            routeDetail = "地铁2号线 → 公交游5路"
-        )
-    )
+private fun TravelRecommendationSection(
+    recommendationCardList: List<TravelRecommendation>,
+    modifier: Modifier = Modifier
+) {
+
     Column(
         modifier = modifier
     ) {
@@ -114,9 +115,6 @@ private fun TravelRecommendationSection(modifier: Modifier = Modifier) {
     }
 }
 
-data class TravelRecommendation(
-    val routeOriginDestination: String, val routeDuration: Int, val routeDetail: String
-)
 
 @Composable
 private fun TravelRecommendationCard(
@@ -182,23 +180,12 @@ private fun TravelRecommendationCard(
 }
 
 
-data class NearbyRecommendation(
-    val attractionImage: Int,
-    val attractionName: String,
-)
-
-
 @Composable
 private fun NearbyRecommendationSection(
+    recommendationList: List<NearbyRecommendation>,
     modifier: Modifier = Modifier,
 ) {
-    val recommendationList = listOf<NearbyRecommendation>(
-        NearbyRecommendation(
-            attractionImage = R.drawable.nearbyrecommendation_first, attractionName = "断桥残雪"
-        ), NearbyRecommendation(
-            attractionImage = R.drawable.nearbyrecommendation_second, attractionName = "灵隐寺"
-        )
-    )
+
 
     Column(
         modifier = modifier
