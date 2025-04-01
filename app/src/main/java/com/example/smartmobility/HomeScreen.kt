@@ -31,7 +31,7 @@ import com.example.smartmobility.general.components.ImageResource
 import com.example.smartmobility.general.components.MediaTitleItem
 import com.example.smartmobility.general.components.Title
 import com.example.smartmobility.model.HomeScreen
-import com.example.smartmobility.model.NearbyRecommendation
+import com.example.smartmobility.model.HomeScreenNearbyRecommendation
 import com.example.smartmobility.model.TravelRecommendation
 
 
@@ -182,7 +182,7 @@ private fun TravelRecommendationCard(
 
 @Composable
 private fun NearbyRecommendationSection(
-    recommendationList: List<NearbyRecommendation>,
+    recommendationList: List<HomeScreenNearbyRecommendation>,
     modifier: Modifier = Modifier,
 ) {
 
@@ -202,7 +202,7 @@ private fun NearbyRecommendationSection(
 
 @Composable
 fun NearbyRecommendationCard(
-    recommendation: NearbyRecommendation,
+    recommendation: HomeScreenNearbyRecommendation,
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {

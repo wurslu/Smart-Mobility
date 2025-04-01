@@ -25,6 +25,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -33,18 +35,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.smartmobility.model.Profile
+import com.example.smartmobility.model.ProfileScreen
 import kotlin.UInt
 
 @Composable
-fun ProfileScreen(modifier: Modifier = Modifier) {
-    val person: Profile = Profile(
-        username = "张雨晨",
-        userId = "123456",
-        collections = 87.toUInt(),
-        foots = 98.toUInt(),
-        coupons = 5.toUInt(),
-        integral = 1000.toUInt(),
-    )
+fun ProfileScreen(
+    modifier: Modifier = Modifier,
+    profileScreenViewModel: ProfileScreen = viewModel()
+) {
+    val person: Profile by profileScreenViewModel.profile.collectAsState()
     LazyColumn(modifier = modifier) {
         item {
             UserProfileHeader()
@@ -60,20 +61,12 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
                 integral = person.integral
             )
         }
-        item{
+        item {
             ProfileMenuSection()
         }
     }
 }
 
-data class Profile(
-    val username: String,
-    val userId: String,
-    val collections: UInt,
-    val foots: UInt,
-    val coupons: UInt,
-    val integral: UInt
-)
 
 @Preview(showBackground = true)
 @Composable

@@ -8,9 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Hotel
-import androidx.compose.material.icons.filled.Restaurant
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -18,64 +15,28 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.smartmobility.general.components.ImageResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.smartmobility.general.components.MediaTitleItem
-import com.example.smartmobility.general.components.MediaTitleItemParam
 import com.example.smartmobility.general.components.Title
+import com.example.smartmobility.model.GuideScreen
+import com.example.smartmobility.model.GuideScreenNearbyRecommendation
+import com.example.smartmobility.model.PopularCheckInItem
+import com.example.smartmobility.model.RecommendedItineraries
 
 
 @Composable
-fun GuideScreen(modifier: Modifier = Modifier) {
-    val popularCheckInSectionItemList = listOf<MediaTitleItemParam>(
-        MediaTitleItemParam(
-            title = "龙井茶园",
-            imageResource = ImageResource.ResourceImage(resId = R.drawable.longjingchayuan)
-        ), MediaTitleItemParam(
-            title = "雷锋夜景",
-            imageResource = ImageResource.ResourceImage(resId = R.drawable.leifengyejing)
-        ), MediaTitleItemParam(
-            title = "曲院风荷",
-            imageResource = ImageResource.ResourceImage(resId = R.drawable.quyuanfenghe)
-        ), MediaTitleItemParam(
-            title = "断桥残雪",
-            imageResource = ImageResource.ResourceImage(resId = R.drawable.duanqiaocanxue)
-        )
-    )
-    val recommendedItinerariesCardParamList = listOf<RecommendedItinerariesCardParam>(
-        RecommendedItinerariesCardParam(
-            scenicSpotNum = 9,
-            totalKilometers = 12,
-            routeName = "西湖一日游",
-            scenicSpotList = listOf<String>("雷峰塔", "白提", "苏堤春晓", "断桥残雪")
-        ), RecommendedItinerariesCardParam(
-            scenicSpotNum = 4,
-            totalKilometers = 5,
-            routeName = "灵隐寺祈福之旅",
-            scenicSpotList = listOf<String>("灵隐寺", "飞来峰", "永福禅寺")
-        )
-    )
-    val nearbyRecommendationCardParamList = listOf<NearbyRecommendationCardParam>(
-        NearbyRecommendationCardParam(
-            name = "知味观",
-            tag = "杭帮菜",
-            price = 158,
-            distance = 350,
-            imageVector = Icons.Filled.Restaurant
-        ), NearbyRecommendationCardParam(
-            name = "西子湖四季酒店",
-            tag = "五星酒店",
-            price = 2680,
-            distance = 500,
-            imageVector = Icons.Filled.Hotel
-        )
-    )
+fun GuideScreen(modifier: Modifier = Modifier, guideScreenViewModel: GuideScreen = viewModel()) {
+    val popularCheckInItemList by guideScreenViewModel.popularCheckInItemList.collectAsState()
+    val recommendedItinerariesList by guideScreenViewModel.recommendedItinerariesList.collectAsState()
+    val nearbyRecommendationList by guideScreenViewModel.nearbyRecommendationList.collectAsState()
 
     LazyColumn(
         modifier = modifier.padding(horizontal = 16.dp)
@@ -84,13 +45,13 @@ fun GuideScreen(modifier: Modifier = Modifier) {
             ScenicSpotGallery()
         }
         item {
-            PopularCheckInSection(itemList = popularCheckInSectionItemList)
+            PopularCheckInSection(itemList = popularCheckInItemList)
         }
         item {
-            RecommendedItinerariesSection(recommendedItinerariesCardParamList = recommendedItinerariesCardParamList)
+            RecommendedItinerariesSection(recommendedItinerariesCardParamList = recommendedItinerariesList)
         }
         item {
-            NearbyRecommendationSection(nearbyRecommendationCardParamList = nearbyRecommendationCardParamList)
+            NearbyRecommendationSection(nearbyRecommendationCardParamList = nearbyRecommendationList)
         }
     }
 }
@@ -118,7 +79,7 @@ private fun ScenicSpotGallery(modifier: Modifier = Modifier) {
 
 @Composable
 private fun PopularCheckInSection(
-    itemList: List<MediaTitleItemParam>, modifier: Modifier = Modifier
+    itemList: List<PopularCheckInItem>, modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
@@ -138,16 +99,10 @@ private fun PopularCheckInSection(
     }
 }
 
-data class RecommendedItinerariesCardParam(
-    val scenicSpotNum: Int,
-    val totalKilometers: Int,
-    val routeName: String,
-    val scenicSpotList: List<String>
-)
 
 @Composable
 private fun RecommendedItinerariesSection(
-    recommendedItinerariesCardParamList: List<RecommendedItinerariesCardParam>,
+    recommendedItinerariesCardParamList: List<RecommendedItineraries>,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
@@ -164,7 +119,7 @@ private fun RecommendedItinerariesSection(
 
 @Composable
 private fun RecommendedItinerariesCard(
-    recommendedItinerariesCardParam: RecommendedItinerariesCardParam,
+    recommendedItinerariesCardParam: RecommendedItineraries,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -214,21 +169,14 @@ private fun RecommendedItinerariesCard(
     }
 }
 
-data class NearbyRecommendationCardParam(
-    val name: String,
-    val tag: String,
-    val price: Int,
-    val distance: Int,
-    val imageVector: ImageVector
-)
 
 @Composable
 private fun NearbyRecommendationSection(
-    nearbyRecommendationCardParamList: List<NearbyRecommendationCardParam>,
+    nearbyRecommendationCardParamList: List<GuideScreenNearbyRecommendation>,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
-        Title("推荐路线")
+        Title("周边推荐")
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
@@ -241,7 +189,7 @@ private fun NearbyRecommendationSection(
 
 @Composable
 private fun NearbyRecommendationCard(
-    nearbyRecommendationCardParam: NearbyRecommendationCardParam,
+    nearbyRecommendationCardParam: GuideScreenNearbyRecommendation,
     modifier: Modifier = Modifier,
 ) {
     Card(

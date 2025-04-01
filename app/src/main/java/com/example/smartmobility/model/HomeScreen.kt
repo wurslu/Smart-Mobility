@@ -11,7 +11,7 @@ data class TravelRecommendation(
     val routeDetail: String
 )
 
-data class NearbyRecommendation(
+data class HomeScreenNearbyRecommendation(
     val attractionImage: Int,
     val attractionName: String,
 )
@@ -30,11 +30,11 @@ class HomeScreen : ViewModel() {
             )
         )
     )
-    private val _nearbyRecommendationList = MutableStateFlow<List<NearbyRecommendation>>(
-        listOf<NearbyRecommendation>(
-            NearbyRecommendation(
+    private val _nearbyRecommendationList = MutableStateFlow<List<HomeScreenNearbyRecommendation>>(
+        listOf<HomeScreenNearbyRecommendation>(
+            HomeScreenNearbyRecommendation(
                 attractionImage = R.drawable.nearbyrecommendation_first, attractionName = "断桥残雪"
-            ), NearbyRecommendation(
+            ), HomeScreenNearbyRecommendation(
                 attractionImage = R.drawable.nearbyrecommendation_second, attractionName = "灵隐寺"
             )
         )
