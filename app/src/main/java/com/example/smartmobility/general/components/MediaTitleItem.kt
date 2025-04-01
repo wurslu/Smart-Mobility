@@ -19,12 +19,6 @@ sealed class ImageResource {
     data class VectorImage(val imageVector: ImageVector) : ImageResource()
 }
 
-data class MediaTitleItemParam(
-    val title: String,
-    val imageSize: Dp = 64.dp,
-    val imageResource: ImageResource
-)
-
 @Composable
 fun MediaTitleItem(
     imageResource: ImageResource,
