@@ -42,4 +42,5 @@ class HomeScreen : ViewModel() {
 
     val travelRecommendationList = _travelRecommendationList.asStateFlow()
     val nearbyRecommendationList = _nearbyRecommendationList.asStateFlow()
+
 }

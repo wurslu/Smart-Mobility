@@ -27,7 +27,8 @@ fun MediaTitleItem(
     modifier: Modifier = Modifier
 ) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
     ) {
         when (imageResource) {
             is ImageResource.VectorImage -> {

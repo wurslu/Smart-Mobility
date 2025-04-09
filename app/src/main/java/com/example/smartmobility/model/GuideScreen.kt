@@ -51,7 +51,7 @@ class GuideScreen : ViewModel() {
             )
         )
     )
-    private val _recommendtaionItinerariesList = MutableStateFlow<List<RecommendedItineraries>>(
+    private val _recommendationItinerariesList = MutableStateFlow<List<RecommendedItineraries>>(
         listOf<RecommendedItineraries>(
             RecommendedItineraries(
                 scenicSpotNum = 9,
@@ -84,6 +84,6 @@ class GuideScreen : ViewModel() {
         )
     )
     val nearbyRecommendationList = _nearbyRecommendationList.asStateFlow()
-    val recommendedItinerariesList = _recommendtaionItinerariesList.asStateFlow()
+    val recommendedItinerariesList = _recommendationItinerariesList.asStateFlow()
     val popularCheckInItemList = _popularCheckInList.asStateFlow()
 }
